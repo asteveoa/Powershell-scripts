@@ -1,0 +1,5 @@
+csvexamples.ps1
+
+
+$userToCheck = "steve - admin"
+csvC:\Users\Steve\Downloads\Powershell Scripts\Sharepoint permissions

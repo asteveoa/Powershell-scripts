@@ -1,0 +1,31 @@
+#########################################################################################
+# Get-MailboxCalendarPermissions_By_UPN.ps1
+#########################################################################################
+
+# User for whom to check the calendar permissions
+$userToCheck = "steve - admin"
+
+# Get all mailboxes
+$mailboxes = Get-Mailbox -ResultSize Unlimited
+# Loop through each mailbox
+foreach ($mailbox in $mailboxes) {
+# Construct the calendar identity
+$calendarIdentity = "$($mailbox.Alias):\Calendar"
+  
+# Try to get calendar permissions and handle errors silently
+$permissions = Get-MailboxFolderPermission -Identity $calendarIdentity -User $userToCheck -ErrorAction SilentlyContinue
+
+# Check if permissions were successfully retrieved
+if ($permissions) {
+# Output the mailbox and the permissions if the user has some form of access
+$permissions | Select-Object @{Name="Mailbox"; Expression={$mailbox.Name}}, @{Name="Calendar"; Expression={$calendarI
+dentity}}, User, AccessRights
+}
+}
+
+
+Mailbox                              Calendar                 User          AccessRights
+-------                              --------                 ----          ------------
+Account Removal                      AccountRemoval:\Calendar Steve - Admin {Owner}     
+48f09a03-d80c-441c-b794-7d347b875260 Ashley:\Calendar         Steve - Admin {Owner}     
+Billing                              Billing:\Calendar        Steve - Admin {Owner}     

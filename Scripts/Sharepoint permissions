@@ -1,0 +1,37 @@
+# Connect to SharePoint Online
+
+Connect-SPOService -Url "https://3yv3xg-admin.sharepoint.com" 
+
+# User to check access for
+$userEmail = "steve@hidemybackground.com"
+
+# Get all site collections
+$siteCollections = Get-SPOSite -Limit All
+
+# Check each site collection for user permissions
+foreach ($site in $siteCollections) {
+    # Attempt to get the user permissions
+    $userPermissions = Get-SPOUser -Site $site.Url -LoginName $userEmail -ErrorAction SilentlyContinue
+    
+    # If the user has permissions, output the site information
+    if ($userPermissions) {
+        Write-Output "User '$userEmail' has access to site: $($site.Url)" -ErrorAction SilentlyContinue
+    }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+
+# Disconnect the SharePoint Online service
+Disconnect-SPOService
