@@ -4,11 +4,11 @@
 #Import-Module ExchangeOnlineManagement 
 #ENSURE ID and NAMES TAGGED WITH #REPLACE ACTUALLY REPLACED WHEN NEEDED
 
-#Loading fun WinForms
+# Loading fun WinForms
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-#Sign in to Microsoft Graph 
+# Sign in to Microsoft Graph 
 $scopes = "User.Read.All","Group.ReadWrite.All","Directory.ReadWrite.All","Domain.Read.All", "Policy.ReadWrite.ConditionalAccess", "Policy.Read.All"
 try {
     Connect-MgGraph -Scopes $scopes -NoWelcome
@@ -20,7 +20,7 @@ Get-MgContext | Out-Null
 Connect-ExchangeOnline 
 Connect-IPPSSession
 
-# 3) Get domains and groups (Graph)
+# Get domains and groups (Graph)
 $conditionalAccessPolicyId = "1a71732e-2efb-416b-b3b2-96e20c0ceab0"  #REPLACE WHEN NEEDED CURRENTLY BASED OFF HIDEMYBACKGROUND TENANT
 $retentionPolicyName = "Retention Policy Test"  #REPLACE WHEN NEEDED CURRENTLY BASED OFF HIDEMYBACKGROUND TENANT
 
@@ -37,7 +37,7 @@ $groups = @(
     Select-Object -ExpandProperty DisplayName -Unique
 )
 
-# 4) Create form
+# Create form
 $form = New-Object System.Windows.Forms.Form
 $form.Font = New-Object System.Drawing.Font("Segoe UI", 12)
 $form.Text = "Create Scan User"
@@ -106,7 +106,7 @@ $form.Controls.Add($btn)
 
 $btn.Add_Click({
   try {
-    # inputs NEEED TO FIX SHOULDNT HAVE TO PUT IN MULTIPLE TIEMES UPN ETC
+    # NEED TO FIX SHOULDNT HAVE TO PUT IN REDUNDANT VALUES
     $upnLocal     = $inputs["User Principal Name"].Text
     $domainSel    = $inputs["Domain"].Text
     $givenName    = $inputs["Given Name"].Text
@@ -259,7 +259,7 @@ Start-Sleep -Seconds $retryDelay
 #Add catch
 try{
 Set-RetentionCompliancePolicy -Identity $retentionPolicyName `
- -AddExchangeLocationException $UserPrincipalName `
+ -AddExchangeLocation $UserPrincipalName `
  -ErrorAction Stop
  [System.Windows.Forms.MessageBox]::Show("User '$UserPrincipalName' added to the Retention Policy exclusion.","Success")
 }
